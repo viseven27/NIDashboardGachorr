@@ -23,6 +23,16 @@
 import SwiftUI
 
 struct DashboardGachorrView: View {
+//    @StateObject private var mqttManager = MQTTManager()
+//    
+//    @State private var topic = "forceSensor/data"
+//    @State private var messageToSend = ""
+    
+//    @ObservedObject var mqttManager: MQTTManager
+    @StateObject var mqttManager = MQTTManager()
+    
+//    let mqttManager: MQTTManager = MQTTManager()
+    
     var body: some View {
         ZStack{
             //Blue Gradient background
@@ -78,13 +88,22 @@ struct DashboardGachorrView: View {
                     VStack(){
                         Text("Gandar")
                             .font(.headline)
-                        Text("Box Gandar")
+                        Text("\(mqttManager.totalAxle)")
+                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
                     }
                     .background(Color.yellow)
                     
                     VStack(){
                         Text("Ban")
-                        Text("Box Ban")
+                        Text("\(mqttManager.totalLastTire)")
+                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
+//                        Text(mqttManager.receivedMessage)
+//                        Text(mqttManager.latestMessage)
+//                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
+//                                        .padding()
+//                                        .background(Color.gray.opacity(0.1))
+//                                        .cornerRadius(12)
+
                     }
                     .background(Color.green)
                     
@@ -115,6 +134,10 @@ struct DashboardGachorrView: View {
                 .stroke(Color.white.opacity(0.3), lineWidth: 1)
         )
         .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y:2)
+        .onAppear {
+            mqttManager.connect()
+//            mqttManager.subscribe(to: topic)
+        }
     }
 }
 
