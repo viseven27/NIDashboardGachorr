@@ -35,7 +35,75 @@ struct DashboardGachorrView: View {
                 endPoint: .bottomTrailing
             )
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .center, spacing: 8) {
+                //Baris ke 1
+                HStack(){
+                    ArrowBoxView()
+                    
+                    VStack(){
+                        Text("iTol-Sistem Transaksi Tol")
+                        Text("PONDOK AREN - GATE 8")
+                        Text("Shift 1 * Periode 1")
+                    }
+                    .background(Color.orange)
+                    
+                    VStack(alignment: .center, spacing: 4){
+                        Text("Kepala Shift")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                        
+                        Image("Pentol1_Prabowo")
+                            .resizable()
+                            .clipShape(Circle())
+//                            .clip(Circle())
+                        Text("Prabowo")
+                    }
+
+                    
+                    VStack(){
+                        Text("Penjaga Tol")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                        
+                        Image("Pentol2_Gibran")
+                            .resizable()
+                            .clipShape(Circle())
+//                            .clip(Circle())
+                        Text("Gibran")
+                    }
+                }
+                
+                //Baris ke 2
+                HStack(){
+                    VStack(){
+                        Text("Gandar")
+                            .font(.headline)
+                        Text("Box Gandar")
+                    }
+                    .background(Color.yellow)
+                    
+                    VStack(){
+                        Text("Ban")
+                        Text("Box Ban")
+                    }
+                    .background(Color.green)
+                    
+                    VStack(){
+                        Text("Harga: ")
+                        Text("Sisa Saldo: ")
+                        Text("Metode: ")
+                        Text("Nomor Kartu: ")
+                    }
+                    .background(Color.yellow)
+                }
+                .background(Color.white)
+                
+                //Baris 3
+                HStack(){
+                    Text("Tombol CTA")
+                        .background(Color.green)
+                }
+                .background(Color.white)
             }
             .padding(16)
         }
