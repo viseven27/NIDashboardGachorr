@@ -37,29 +37,32 @@ struct DashboardGachorrView: View {
             
             VStack(alignment: .center, spacing: 8) {
                 //Baris ke 1
-                HStack(){
+                HStack(alignment: .top, spacing: 8){
                     ArrowBoxView()
                     
-                    VStack(){
+                    VStack(alignment: .leading, spacing: 2){
                         Text("iTol-Sistem Transaksi Tol")
                         Text("PONDOK AREN - GATE 8")
                         Text("Shift 1 * Periode 1")
                     }
-                    .background(Color.orange)
                     
-                    VStack(alignment: .center, spacing: 4){
+                    Spacer()
+                    
+                    VStack(){
                         Text("Kepala Shift")
                             .font(.subheadline)
                             .foregroundColor(.white)
                         
                         Image("Pentol1_Prabowo")
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60) // Pastikan square
                             .clipShape(Circle())
-//                            .clip(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                        
                         Text("Prabowo")
                     }
 
-                    
                     VStack(){
                         Text("Penjaga Tol")
                             .font(.subheadline)
@@ -67,8 +70,11 @@ struct DashboardGachorrView: View {
                         
                         Image("Pentol2_Gibran")
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60)
                             .clipShape(Circle())
-//                            .clip(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                        
                         Text("Gibran")
                     }
                 }
@@ -78,26 +84,54 @@ struct DashboardGachorrView: View {
                     VStack(){
                         Text("Gandar")
                             .font(.headline)
-                        Text("Box Gandar")
+                        
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.white)
+                                .frame(width: 130, height: 130)
+                                .shadow(radius: 4)
+                            
+                            Text("2")
+                                .font(.system(size: 96, weight: .bold))
+                                .foregroundColor(.black)
+                        }
                     }
-                    .background(Color.yellow)
                     
                     VStack(){
                         Text("Ban")
-                        Text("Box Ban")
+                            .font(.headline)
+                        
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.white)
+                                .frame(width: 130, height: 130)
+                                .shadow(radius: 4)
+                            
+                            Text("2")
+                                .font(.system(size: 96, weight: .bold))
+                                .foregroundColor(.black)
+                        }
                     }
-                    .background(Color.green)
-                    
                     VStack(){
-                        Text("Harga: ")
-                        Text("Sisa Saldo: ")
-                        Text("Metode: ")
-                        Text("Nomor Kartu: ")
+                        Spacer()
+                            .frame(height: 22)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.white)
+                                .frame(width: 260, height: 130)
+                            
+                            VStack(alignment: .leading, spacing: 2){
+                                Text("Harga: ")
+                                Text("Sisa Saldo: ")
+                                Text("Metode: ")
+                                Text("Nomor Kartu: ")
+                            }
+                            .foregroundColor(.black)
+                        }
                     }
-                    .background(Color.yellow)
+                    
+                    
                 }
-                .background(Color.white)
-                
                 //Baris 3
                 HStack(){
                     Text("Tombol CTA")
