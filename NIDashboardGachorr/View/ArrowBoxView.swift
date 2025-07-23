@@ -13,7 +13,7 @@ struct ArrowBoxView: View {
         ZStack(alignment: .topTrailing) {
             //1) The grey box
             Rectangle()
-                .fill(Color.gray.opacity(0.7))
+                .fill(Color.gray)
             
             Image(systemName: "arrow.down")
                 .resizable()
