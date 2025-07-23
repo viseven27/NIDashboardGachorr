@@ -3,152 +3,120 @@
 import SwiftUI
 
 struct DashboardGachorrView: View {
-//    @StateObject private var mqttManager = MQTTManager()
-//    
-//    @State private var topic = "forceSensor/data"
-//    @State private var messageToSend = ""
-    
-//    @ObservedObject var mqttManager: MQTTManager
     @StateObject var mqttManager = MQTTManager()
     
-//    let mqttManager: MQTTManager = MQTTManager()
-    
     var body: some View {
-        ZStack {
-            // Main background color, matching the dark blue from the screenshot
-            Color(red: 0.06, green: 0.14, blue: 0.26).ignoresSafeArea()
-            
-            VStack(alignment: .center, spacing: 12) {
-                // MARK: - Top Header Row
-                HStack(alignment: .center, spacing: 16) {
-                    // Green Arrow Box
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.green)
-                            .frame(width: 70, height: 70)
-                        Image(systemName: "arrow.down")
-                            .font(.system(size: 36, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    
-                    // Toll Gate Info
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("iTol - Sistem Transaksi Tol")
-                            .font(.system(size: 14))
-                        Text("PONDOK AREN - GATE 8")
-                            .font(.system(size: 22, weight: .bold))
-                    }
-                    
-                    Spacer()
-                    
-                    VStack(){
-                        Text("Kepala Shift")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                        
-                        Image("Pentol1_Prabowo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60, height: 60) // Pastikan square
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white, lineWidth: 1))
-                        
-                        Text("Prabowo")
-                    }
-
-                    VStack(){
-                        Text("Penjaga Tol")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                        
-                        Image("Pentol2_Gibran")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60, height: 60)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white, lineWidth: 1))
-                        
-                        Text("Gibran")
-                    }
-                    .padding([.top, .trailing], 20)
-                    .padding([.bottom, .leading], 12)
-//                    .padding()
-                    .background(Color(red: 0.13, green: 0.4, blue: 0.7).opacity(0.3))
-                    .cornerRadius(12)
-                }
+            ZStack {
+                // Main background color, matching the dark blue from the screenshot
+                Color(red: 0.06, green: 0.14, blue: 0.26).ignoresSafeArea()
                 
-                // MARK: - Middle Data Row
-                HStack(spacing: 16) {
-                    // "Gandar" and "Ban" Boxes
-                    DataBoxView(title: "Gandar", value: "5")
-                    DataBoxView(title: "Ban Belakang", value: "16")
-                    
-                    // Transaction Details Box
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Harga : Rp.")
-                        Text("Sisa Saldo : Rp.")
-                        Text("Metode :")
-                        Text("Nomor Kartu :")
-                //Baris ke 2
-                HStack(){
-                    VStack(){
-                        Text("Gandar")
-                            .font(.headline)
-                        Text("\(mqttManager.totalAxle)")
-                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
-                    }
-                    .background(Color.yellow)
-                    
-                    VStack(){
-                        Text("Ban")
-                        Text("\(mqttManager.totalLastTire)")
-                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
-//                        Text(mqttManager.receivedMessage)
-//                        Text(mqttManager.latestMessage)
-//                                        .font(.system(size: 28, weight: .medium, design: .monospaced))
-//                                        .padding()
-//                                        .background(Color.gray.opacity(0.1))
-//                                        .cornerRadius(12)
+                VStack(alignment: .center, spacing: 12) {
+                    // MARK: - Top Header Row
+                    HStack(alignment: .center, spacing: 16) {
+                        // Green Arrow Box
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.green)
+                                .frame(width: 70, height: 70)
+                            Image(systemName: "arrow.down")
+                                .font(.system(size: 36, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                        
+                        // Toll Gate Info
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("iTol - Sistem Transaksi Tol")
+                                .font(.system(size: 14))
+                            Text("PONDOK AREN - GATE 8")
+                                .font(.system(size: 22, weight: .bold))
+                        }
+                        
+                        Spacer()
+                        
+                        HStack{
+                            VStack(){
+                                Text("Kepala Shift")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white)
+                                
+                                Image("Pentol1_Prabowo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60) // Pastikan square
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                                
+                                Text("Prabowo")
+                            }
 
+                            VStack(){
+                                Text("Penjaga Tol")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white)
+                                
+                                Image("Pentol2_Gibran")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                                
+                                Text("Gibran")
+                            }
+                        }
+                        .padding([.top, .trailing], 20)
+                        .padding([.bottom, .leading], 12)
+    //                    .padding()
+                        .background(Color(red: 0.13, green: 0.4, blue: 0.7).opacity(0.3))
+                        .cornerRadius(12)
                     }
-                    .background(Color.green)
                     
-                    VStack(){
-                        Text("Harga: ")
-                        Text("Sisa Saldo: ")
-                        Text("Metode: ")
-                        Text("Nomor Kartu: ")
+                    // MARK: - Middle Data Row
+                    HStack(spacing: 16) {
+                        // "Gandar" and "Ban" Boxes
+                        DataBoxView(title: "Gandar", value: "\(mqttManager.totalAxle)")
+                        DataBoxView(title: "Ban Belakang", value: "\(mqttManager.totalLastTire)")
+                        
+                        // Transaction Details Box
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Harga : Rp.")
+                            Text("Sisa Saldo : Rp.")
+                            Text("Metode :")
+                            Text("Nomor Kartu :")
+                        }
+                        .font(.system(size: 16, weight: .medium))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding()
+                        .background(Color.white)
+                        .foregroundStyle(.black)
+                        .cornerRadius(12)
                     }
-                    .font(.system(size: 16, weight: .medium))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    .padding()
-                    .background(Color.white)
-                    .foregroundStyle(.black)
-                    .cornerRadius(12)
-                }
-                .frame(maxHeight: 140) // Constrain height of the middle row
-                .padding(.trailing, 20)
-                
-                // MARK: - Bottom Action Button
-                Text("PILIH GOLONGAN 5")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.red, lineWidth: 5)
-                    )
-                    .shadow(color: .black.opacity(0.2), radius: 5, y: 3)
+                    .frame(maxHeight: 140) // Constrain height of the middle row
                     .padding(.trailing, 20)
-            }
-            .padding([.leading, .bottom], 20)
+                    
+                    // MARK: - Bottom Action Button
+                    Text("PILIH GOLONGAN 5")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.red, lineWidth: 5)
+                        )
+                        .shadow(color: .black.opacity(0.2), radius: 5, y: 3)
+                        .padding(.trailing, 20)
+                }
+                .padding([.leading, .bottom], 20)
+        }
+        .onAppear {
+            mqttManager.connect()
+//            mqttManager.subscribe(to: topic)
         }
     }
 }
-
 
 /// A view for the white data boxes ("Gandar", "Ban").
 struct DataBoxView: View {
@@ -171,17 +139,6 @@ struct DataBoxView: View {
         }
 //        .frame(width: 150, maxHeight: .infinity)
         
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .cornerRadius(8)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.white.opacity(0.3), lineWidth: 1)
-        )
-        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y:2)
-        .onAppear {
-            mqttManager.connect()
-//            mqttManager.subscribe(to: topic)
-        }
     }
 }
 
