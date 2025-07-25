@@ -2,11 +2,17 @@
 
 import SwiftUI
 
+
+
 struct DashboardGachorrView: View {
     @StateObject var mqttManager = MQTTManager()
+    @StateObject var viewModel = DashboardViewModel()
     
     var body: some View {
             ZStack {
+                KeyEventHandlingView {
+                    viewModel.simulateCTA(currentState: viewModel.state)
+                }
                 // Main background color, matching the dark blue from the screenshot
                 Color(red: 0.06, green: 0.14, blue: 0.26).ignoresSafeArea()
                 
@@ -74,7 +80,7 @@ struct DashboardGachorrView: View {
                     // MARK: - Middle Data Row
                     HStack(spacing: 16) {
                         // "Gandar" and "Ban" Boxes
-                        DataBoxView(title: "Gandar", value: "\(mqttManager.totalAxle)")
+                        DataBoxView(title: "Gandar", value: "\(mqttManager.totalAxle) ")
                         DataBoxView(title: "Ban Belakang", value: "\(mqttManager.totalLastTire)")
                         
                         // Transaction Details Box
@@ -95,25 +101,34 @@ struct DashboardGachorrView: View {
                     .padding(.trailing, 20)
                     
                     // MARK: - Bottom Action Button
-                    Text("PILIH GOLONGAN 5")
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.red, lineWidth: 5)
-                        )
-                        .shadow(color: .black.opacity(0.2), radius: 5, y: 3)
-                        .padding(.trailing, 20)
+                    switch viewModel.state {
+                    case .noVehicle:
+                        CTADashboard(text: "TIDAK ADA KENDARAAN", colorHex: "FF94A3B8")
+                    case .chooseClass:
+                        CTADashboard(text: "PILIH GOLONGAN", colorHex: "FFE71923", showAnimation: true)
+                    case .processing:
+                        CTADashboard(text: "SEDANG MEMPROSES", colorHex: "FF3499CC")
+                    case .transactionSuccess:
+                        CTADashboard(text: "TRANSAKSI BERHASIL", colorHex: "FF36D914")
+                    case .transactionFailed:
+                        CTADashboard(text: "TRANSAKSI GAGAL", colorHex: "FFB91C1C")
+                    case .reverseVehicle:
+                        CTADashboard(text: "KENDARAAN MUNDUR", colorHex: "FFB91C1C")
+                    case .gateClosing:
+                        CTADashboard(text: "GERBANG TUTUP", colorHex: "FFE71923")
+                    case .watingForCard:
+                        CTADashboard(text: "MENUNGGU KARTU", colorHex: "FF1D4777")
+                    case .vehiclePassing:
+                        CTADashboard(text: "KENDARAAN LEWAT", colorHex: "FF1D4777")
+                    }
                 }
                 .padding([.leading, .bottom], 20)
         }
         .onAppear {
             mqttManager.connect()
-//            mqttManager.subscribe(to: topic)
+        }
+        .onChange(of: mqttManager.totalAxle) { newValue in
+            print("New value: \(newValue)")
         }
     }
 }
@@ -147,3 +162,79 @@ struct DataBoxView: View {
 #Preview {
     DashboardGachorrView()
 }
+
+import SwiftUI
+import AppKit
+
+//struct KeyEventHandlingView: NSViewRepresentable {
+////    func makeCoordinator() -> Coordinator {
+////        // nothing
+////        return CI
+////    }
+//    
+//    var onReturnPressed: () -> Void
+//
+//    class Coordinator: NSView {
+//        var onReturnPressed: () -> Void
+//
+//        init(onReturnPressed: @escaping () -> Void) {
+//            self.onReturnPressed = onReturnPressed
+//            super.init(frame: .zero)
+//        }
+//
+//        required init?(coder: NSCoder) {
+//            fatalError("init(coder:) has not been implemented")
+//        }
+//
+//        override var acceptsFirstResponder: Bool { true }
+//
+//        override func keyDown(with event: NSEvent) {
+//            if event.keyCode == 36 { // 36 = Return key
+//                onReturnPressed()
+//            }
+//        }
+//
+//        override func viewDidMoveToWindow() {
+//            window?.makeFirstResponder(self)
+//        }
+//    }
+//
+//    func makeNSView(context: Context) -> NSView {
+//        return Coordinator(onReturnPressed: onReturnPressed)
+//    }
+//
+//    func updateNSView(_ nsView: NSView, context: Context) {}
+//}
+
+//import SwiftUI
+import AppKit
+
+struct KeyEventHandlingView: NSViewRepresentable {
+    var onReturnPressed: () -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = KeyCatcherView()
+        view.onReturnPressed = onReturnPressed
+        DispatchQueue.main.async {
+            view.window?.makeFirstResponder(view) // Make it focusable
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
+
+    class KeyCatcherView: NSView {
+        var onReturnPressed: (() -> Void)?
+
+        override var acceptsFirstResponder: Bool { true }
+
+        override func keyDown(with event: NSEvent) {
+            if event.keyCode == 36 { // Return key
+                onReturnPressed?()
+            } else {
+                super.keyDown(with: event)
+            }
+        }
+    }
+}
+
