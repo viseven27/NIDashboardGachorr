@@ -23,23 +23,6 @@ enum TransactionState {
 class DashboardViewModel: ObservableObject {
     @Published private(set) var state: TransactionState = .noVehicle
     
-//    func loadVehicleClass(totalAxle: Int, totalTire: Int) {
-//        if (totalAxle == 2 && totalTire == 2) {
-//            updateState(.chooseClass(1))
-//        } else if (totalAxle == 2 && totalTire > 2) {
-//            updateState(.chooseClass(2))
-//        } else if (totalAxle >= 5) {
-//            updateState(.chooseClass(5))
-//        } else {
-//            updateState(.chooseClass(totalAxle))
-//        }
-//        continueTransaction()
-//    }
-//    
-//    func continueTransaction() {
-//        
-//    }
-    
     func simulateCTA(currentState: TransactionState) {
         switch state {
         case .noVehicle:

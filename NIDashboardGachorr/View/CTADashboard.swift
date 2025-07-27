@@ -16,7 +16,7 @@ struct CTADashboard: View {
 
     var body: some View {
         Text(text)
-            .font(.system(size: 28, weight: .bold))
+            .font(.system(size: 36, weight: .bold))
             .foregroundColor(.black)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
@@ -25,8 +25,6 @@ struct CTADashboard: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(hex: colorHex), lineWidth: pulse ? 10 : 5)
-//                    .scaleEffect(pulse ? 1.05 : 1.0)
-//                    .opacity(pulse ? 0.6 : 1.0)
                     .animation(
                         showAnimation
                         ? Animation.easeInOut(duration: 0.3).repeatForever(autoreverses: true)

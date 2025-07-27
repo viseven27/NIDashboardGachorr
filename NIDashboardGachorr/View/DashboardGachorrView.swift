@@ -1,8 +1,5 @@
-
-
 import SwiftUI
-
-
+import AppKit
 
 struct DashboardGachorrView: View {
     @StateObject var mqttManager = MQTTManager()
@@ -72,10 +69,10 @@ struct DashboardGachorrView: View {
                         }
                         .padding([.top, .trailing], 20)
                         .padding([.bottom, .leading], 12)
-    //                    .padding()
                         .background(Color(red: 0.13, green: 0.4, blue: 0.7).opacity(0.3))
                         .cornerRadius(12)
                     }
+                    .padding(.bottom, 30)
                     
                     // MARK: - Middle Data Row
                     HStack(spacing: 16) {
@@ -99,6 +96,7 @@ struct DashboardGachorrView: View {
                     }
                     .frame(maxHeight: 140) // Constrain height of the middle row
                     .padding(.trailing, 20)
+                    .padding(.bottom, 30)
                     
                     // MARK: - Bottom Action Button
                     switch viewModel.state {
@@ -127,9 +125,6 @@ struct DashboardGachorrView: View {
         .onAppear {
             mqttManager.connect()
         }
-        .onChange(of: mqttManager.totalAxle) { newValue in
-            print("New value: \(newValue)")
-        }
     }
 }
 
@@ -142,7 +137,6 @@ struct DataBoxView: View {
         VStack(spacing: 4) {
             Text(title)
                 .font(.system(size: 20, weight: .medium))
-//                .foregroundStyle(.black)
             Text(value)
                 .font(.system(size: 80, weight: .bold))
                 .foregroundStyle(.black)
@@ -152,62 +146,13 @@ struct DataBoxView: View {
                 .cornerRadius(12)
                 
         }
-//        .frame(width: 150, maxHeight: .infinity)
-        
     }
 }
-
 
 // MARK: - Preview
 #Preview {
     DashboardGachorrView()
 }
-
-import SwiftUI
-import AppKit
-
-//struct KeyEventHandlingView: NSViewRepresentable {
-////    func makeCoordinator() -> Coordinator {
-////        // nothing
-////        return CI
-////    }
-//    
-//    var onReturnPressed: () -> Void
-//
-//    class Coordinator: NSView {
-//        var onReturnPressed: () -> Void
-//
-//        init(onReturnPressed: @escaping () -> Void) {
-//            self.onReturnPressed = onReturnPressed
-//            super.init(frame: .zero)
-//        }
-//
-//        required init?(coder: NSCoder) {
-//            fatalError("init(coder:) has not been implemented")
-//        }
-//
-//        override var acceptsFirstResponder: Bool { true }
-//
-//        override func keyDown(with event: NSEvent) {
-//            if event.keyCode == 36 { // 36 = Return key
-//                onReturnPressed()
-//            }
-//        }
-//
-//        override func viewDidMoveToWindow() {
-//            window?.makeFirstResponder(self)
-//        }
-//    }
-//
-//    func makeNSView(context: Context) -> NSView {
-//        return Coordinator(onReturnPressed: onReturnPressed)
-//    }
-//
-//    func updateNSView(_ nsView: NSView, context: Context) {}
-//}
-
-//import SwiftUI
-import AppKit
 
 struct KeyEventHandlingView: NSViewRepresentable {
     var onReturnPressed: () -> Void

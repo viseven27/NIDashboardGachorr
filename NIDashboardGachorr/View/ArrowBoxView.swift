@@ -11,7 +11,6 @@ import SwiftUI
 struct ArrowBoxView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            //1) The grey box
             Rectangle()
                 .fill(Color.gray)
             
