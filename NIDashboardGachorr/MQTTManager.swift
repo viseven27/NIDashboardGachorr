@@ -3,6 +3,7 @@ import Foundation
 
 class MQTTManager: CocoaMQTTDelegate, ObservableObject {
     var mqtt: CocoaMQTT!
+    var onDataReceived: ((Int, Int) -> Void)?
     
     @Published var latestMessage: String = "Waiting for data..."
     @Published var totalAxle: Int = 0
@@ -51,13 +52,31 @@ class MQTTManager: CocoaMQTTDelegate, ObservableObject {
         
     }
     
+//    func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16) {
+//        if message.topic == "forceSensor/data" {
+//            print("message: \(message.string)")
+//            
+//            if let string = message.string {
+//                (totalAxle, totalLastTire) = analyzeForceData(string)
+//            }
+//        }
+//    }
+    
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16) {
-        if message.topic == "forceSensor/data" {
-            print("message: \(message.string)")
-            
-            if let string = message.string {
-                (totalAxle, totalLastTire) = analyzeForceData(string)
-            }
+        
+//        if message.topic == "forceSensor/data" {
+//            print("message: \(message.string)")
+//            
+//            if let string = message.string {
+//                (totalAxle, totalLastTire) = analyzeForceData(string)
+//            }
+//        }
+        guard let string = message.string else { return }
+        print("message \(string)")
+        self.latestMessage = string
+        (totalAxle, totalLastTire) = analyzeForceData(string)
+        DispatchQueue.main.async {
+            self.onDataReceived?(self.totalAxle, self.totalLastTire)
         }
     }
     

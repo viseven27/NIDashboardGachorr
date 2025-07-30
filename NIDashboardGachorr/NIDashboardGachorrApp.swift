@@ -13,5 +13,6 @@ struct NIDashboardGachorrApp: App {
         WindowGroup{
             ContentView()
         }
+        .modelContainer(for: VehicleData.self)
     }
 }
