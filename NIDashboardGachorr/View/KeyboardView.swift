@@ -11,7 +11,7 @@ import SwiftUI
 struct KeyboardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Ini tempat keyboard")
+            Text("Ini Tempat Keyboard")
                 .foregroundColor(.black)
         }
         .padding()

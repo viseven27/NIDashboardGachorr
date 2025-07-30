@@ -25,7 +25,7 @@ class VehicleDataManager {
     ) {
         let newData = VehicleData(
             iotData: iotData,
-            dataReceivedAt: Date(),
+            dataReceivedAt: Date.now,
             isTransactionDone: false,
             jumlahGandar: axle,
             jumlahBanBelakang: tire

@@ -1,15 +1,56 @@
 import SwiftUI
 import AppKit
+import SwiftData
 
 struct DashboardGachorrView: View {
     @StateObject var mqttManager = MQTTManager()
     @StateObject var viewModel = DashboardViewModel()
     
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<VehicleData> { !$0.isTransactionDone }, sort: \.dataReceivedAt) var pendingData: [VehicleData]
+    
+    @State var price = ""
+    @State var balance = ""
+    @State var paymentMethod = ""
+    
+    @State var cardNumber = ""
+    
     var body: some View {
             ZStack {
+//                KeyEventHandlingView {
+//                    viewModel.simulateCTA(currentState: viewModel.state)
+//                }
+                
                 KeyEventHandlingView {
+                    print(pendingData.count)
+                    if viewModel.state == .chooseClass {
+                        price = "10.000"
+                    }
+                    if viewModel.state == .watingForCard {
+                        balance = "145.000"
+                        paymentMethod = "E-Money | Bank Sendiri"
+                        cardNumber = "1234-5678-9012"
+                    }
+                    if(viewModel.state == .vehiclePassing) {
+                        price = ""
+                        balance = ""
+                        paymentMethod = ""
+                        cardNumber = ""
+                    }
+                    if viewModel.state == .transactionSuccess {
+                        if let data = pendingData.first {
+                            data.isTransactionDone = true
+                            do {
+                                try modelContext.save()
+                                print("✅ Marked transaction as done.")
+                            } catch {
+                                print("❌ Failed to update transaction: \(error.localizedDescription)")
+                            }
+                        }
+                    }
                     viewModel.simulateCTA(currentState: viewModel.state)
                 }
+
                 // Main background color, matching the dark blue from the screenshot
                 Color(red: 0.06, green: 0.14, blue: 0.26).ignoresSafeArea()
                 
@@ -42,29 +83,30 @@ struct DashboardGachorrView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.white)
                                 
-                                Image("Pentol1_Prabowo")
+                                Image("joko")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 60, height: 60) // Pastikan square
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.white, lineWidth: 1))
                                 
-                                Text("Prabowo")
+                                Text("Joko")
                             }
 
                             VStack(){
                                 Text("Penjaga Tol")
                                     .font(.subheadline)
                                     .foregroundColor(.white)
+ 
                                 
-                                Image("Pentol2_Gibran")
+                                Image("ade")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.white, lineWidth: 1))
                                 
-                                Text("Gibran")
+                                Text("Bobon")
                             }
                         }
                         .padding([.top, .trailing], 20)
@@ -77,15 +119,18 @@ struct DashboardGachorrView: View {
                     // MARK: - Middle Data Row
                     HStack(spacing: 16) {
                         // "Gandar" and "Ban" Boxes
-                        DataBoxView(title: "Gandar", value: "\(mqttManager.totalAxle) ")
-                        DataBoxView(title: "Ban Belakang", value: "\(mqttManager.totalLastTire)")
+                        DataBoxView(title: "Gandar", value: "\(pendingData.first?.jumlahGandar ?? 0)")
+                        DataBoxView(title: "Ban Belakang", value: "\(pendingData.first?.jumlahBanBelakang ?? 0)")
+
+//                        DataBoxView(title: "Gandar", value: "\(mqttManager.totalAxle) ")
+//                        DataBoxView(title: "Ban Belakang", value: "\(mqttManager.totalLastTire)")
                         
                         // Transaction Details Box
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Harga : Rp.")
-                            Text("Sisa Saldo : Rp.")
-                            Text("Metode :")
-                            Text("Nomor Kartu :")
+                            Text("Harga : Rp. \(price)")
+                            Text("Sisa Saldo : Rp. \(balance)")
+                            Text("Metode : \(paymentMethod)")
+                            Text("Nomor Kartu : \(cardNumber)")
                         }
                         .font(.system(size: 16, weight: .medium))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -125,6 +170,17 @@ struct DashboardGachorrView: View {
         .onAppear {
             mqttManager.connect()
         }
+        .onChange(of: mqttManager.latestMessage) { oldValue, newValue in
+            mqttManager.onDataReceived = { axle, tire in
+                let manager = VehicleDataManager(modelContext: modelContext)
+                manager.saveVehicleData(
+                    iotData: mqttManager.latestMessage,
+                    isTransactionDone: false,
+                    axle: axle,
+                    tire: tire
+                )
+            }
+        }
     }
 }
 
@@ -150,9 +206,9 @@ struct DataBoxView: View {
 }
 
 // MARK: - Preview
-#Preview {
-    DashboardGachorrView()
-}
+//#Preview {
+//    DashboardGachorrView()
+//}
 
 struct KeyEventHandlingView: NSViewRepresentable {
     var onReturnPressed: () -> Void
